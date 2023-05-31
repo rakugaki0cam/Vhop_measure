@@ -68,6 +68,10 @@ void __interrupt() INTERRUPT_InterruptManager (void)
         {
             CCP5_CaptureISR();
         } 
+        else if(PIE4bits.CCP4IE == 1 && PIR4bits.CCP4IF == 1)
+        {
+            CCP4_CaptureISR();
+        } 
         else if(PIE1bits.TX1IE == 1 && PIR1bits.TX1IF == 1)
         {
             EUSART1_TxDefaultInterruptHandler();
@@ -75,10 +79,6 @@ void __interrupt() INTERRUPT_InterruptManager (void)
         else if(PIE1bits.RC1IE == 1 && PIR1bits.RC1IF == 1)
         {
             EUSART1_RxDefaultInterruptHandler();
-        } 
-        else if(PIE4bits.CCP4IE == 1 && PIR4bits.CCP4IF == 1)
-        {
-            CCP4_CaptureISR();
         } 
         else if(PIE1bits.TMR1GIE == 1 && PIR1bits.TMR1GIF == 1)
         {
