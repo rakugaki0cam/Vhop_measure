@@ -26,7 +26,8 @@
 #include "header.h"
 
 //タイマ換算値
-#define TIMER1GAIN  (float)(4*4*1000/64000000)  // msec/bit   clock 64MHz FOSC/4 prescaler1:4
+#define PRESCALER   1   // prescaler
+#define TIMER1GAIN  (float)1/_XTAL_FREQ*4*PRESCALER*1000  // msec/bit  FOSC/4
 //センサ位置
 #define D0  9-3 // mm 玉待機位置～センサ1 玉半径3mm先がオンする位置
 #define D1  7   // mm センサ1～2距離
@@ -34,9 +35,7 @@
 
 
 //global
-bool sensor1flag = 0;
-bool sensor2flag = 0;
-bool sensor3flag = 0;
+
 uint16_t ontime2;
 uint16_t ontime3;
 
@@ -45,7 +44,8 @@ float   dt1;    // msec センサ1～2時間
 float   dt2;    // msec センサ2～3時間
 float   v1;     // m/sec センサ1～2平均速度
 float   v2;     // m/sec センサ2～3平均速度
-uint32_t cnt;
+uint16_t cnt;
+uint8_t meas_stat;
 
 /*
                          Main application
@@ -80,67 +80,91 @@ void main(void)
     printf(" Velocity  HOP out \n");
     printf("*******************\n");
 
-    TMR1_WriteTimer(0xffff);
+    TMR1_WriteTimer(0x0000);
     TMR1_StartTimer();
     TMR1_StartSinglePulseAcquisition();
+    meas_stat = 0;
     cnt = 0;
     
     while (1)
     {
         // Add your application code
-        if (sensor1flag == 1){
-            //measurement start
-            printf("meas\n");
-            while(!sensor3flag){
-                //wait
-                cnt++;
-                if (cnt > 0x2000){
-                    printf("break\n");
-                    break;
+        switch (meas_stat){
+            case 0:
+                
+            case 1:
+                            
+            case 2:
+                cnt = TMR1_ReadTimer();
+                if (cnt > 0xff00){
+                    meas_stat = 4;
                 }
-            }
-            TMR1_StopTimer();
-            
-            printf("timer2: %4x\n", ontime2);
-            printf("timer3: %4x\n", ontime3);
-            dt1 = (float)(0xffff - ontime2) * 0.00025; // msec
-            dt2 = (float)(ontime2 - ontime3) * 0.00025; // msec
-            v1 = (float)D1 / dt1;  // m/sec
-            v2 = (float)D2 / dt2;  // m/sec
-            printf("s12 %5.2fmsec\n", dt1);
-            printf("    %5.3fm/sec\n", v1);
-            printf("s23 %5.2fmsec\n", dt2);
-            printf("    %5.3fm/sec\n", v2);
-            printf("\n");
-            
-            __delay_ms(2000);
-            
-            //init
-            cnt = 0;
-            sensor1flag = 0;
-            TMR1_WriteTimer(0xffff);
-            TMR1_StartTimer();
-            TMR1_StartSinglePulseAcquisition();
-            
+                break;
+
+            case 3:
+                //printf("timer2: %4x\n", ontime2);
+                //printf("timer3: %4x\n", ontime3);
+                dt1 = (float)ontime2 * TIMER1GAIN; // msec
+                dt2 = (float)(ontime3 - ontime2) * TIMER1GAIN; // msec
+                v1 = (float)D1 / dt1;  // m/sec
+                v2 = (float)D2 / dt2;  // m/sec
+                printf("s12 %6.4fmsec\n", dt1);
+                printf("    %5.2fm/sec\n", v1);
+                printf("s23 %6.4fmsec\n", dt2);
+                printf("    %5.2fm/sec\n", v2);
+                printf("\n");
+
+                __delay_ms(500);
+                meas_tmr1_init();
+                break;
+            case 4:
+                printf("time over\n");
+                __delay_ms(500);
+                meas_tmr1_init();
+                break;
+           
         }
+        
+        
+      
         
     }
 }
 
+void meas_tmr1_init(void){
+    cnt = 0;
+    TMR1_StopTimer();
+    meas_stat = 0;
+    T1GCONbits.T1GTM = 0;
+    T1GCONbits.T1GTM = 1;
+    TMR1_WriteTimer(0x0000);
+    TMR1_StartTimer();
+    TMR1_StartSinglePulseAcquisition();
+    
+}
+
 
 void sensor1on(void){
-    sensor1flag = 1;
+    //t1g interruptはいつ入る? たぶん1周期(2つ目のライズエッジ)
+    //よってスタートのタイミングは測れない
+    //meas_stat = 1;
     
 }
 
 void sensor2on(uint16_t a){   //ontime2 - global
-    sensor2flag = 1;
-    ontime2 = a;
+    if (meas_stat == 0){
+        meas_stat = 2;
+        ontime2 = a;
+    }
+    
 }
 
-void sensor3on(uint16_t a){   //ontime3 - global
-    sensor3flag = 1;
-    ontime3 = a;
+void sensor3on(uint16_t b){   //ontime3 - global
+    if (meas_stat == 2){
+        meas_stat = 3;
+        ontime3 = b;
+    }
+    
 }
 
 /**

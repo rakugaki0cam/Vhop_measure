@@ -144,7 +144,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="CCP4" name="validateTMR1"/>
-         <value>250</value>
+         <value>244.140625</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="CCP4" name="validateTMR2"/>
@@ -348,7 +348,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="CCP5" name="validateTMR1"/>
-         <value>250</value>
+         <value>244.140625</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="CCP5" name="validateTMR2"/>
@@ -468,7 +468,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="CMP1" name="COMPPIN"/>
-         <value>disabled</value>
+         <value>enabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="CMP1" name="cmpIntermodule"/>
@@ -548,7 +548,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="CMP1" registerAlias="CMCON"/>
-         <value>156</value>
+         <value>220</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="CMP1" registerAlias="CMCON" settingAlias="CNCH"/>
@@ -556,7 +556,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="CMP1" registerAlias="CMCON" settingAlias="COE"/>
-         <value>COUT_internal</value>
+         <value>COUT_pin</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="CMP1" registerAlias="CMCON" settingAlias="CON"/>
@@ -576,7 +576,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="CMP1" registerAlias="CMPI" settingAlias="enable"/>
-         <value>enabled</value>
+         <value>disabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="CMP1" registerAlias="CMPI" settingAlias="flag"/>
@@ -2776,7 +2776,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="Pin Module" registerAlias="TRISB"/>
-         <value>255</value>
+         <value>251</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="Pin Module" registerAlias="TRISC"/>
@@ -2984,7 +2984,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="TRISB" settingAlias="TRISB2"/>
-         <value>input</value>
+         <value>output</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="TRISB" settingAlias="TRISB3"/>
@@ -3872,7 +3872,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="reloadValue"/>
-         <value>49536</value>
+         <value>0</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="tckiPin"/>
@@ -3884,7 +3884,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="timerClockActual"/>
-         <value>250</value>
+         <value>244.140625</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="timerPeriod"/>
@@ -3892,15 +3892,15 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="timerPeriodActual"/>
-         <value>0.004</value>
+         <value>0.004096</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="timerPeriodMax"/>
-         <value>0.016384</value>
+         <value>0.004096</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="timerPeriodMin"/>
-         <value>0.00000025</value>
+         <value>0.000000063</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="timerstart"/>
@@ -4032,7 +4032,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="TMR1" registerAlias="TCON"/>
-         <value>33</value>
+         <value>1</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="TMR1" registerAlias="TGCON"/>
@@ -4040,11 +4040,11 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="TMR1" registerAlias="TMRH"/>
-         <value>193</value>
+         <value>0</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="TMR1" registerAlias="TMRL"/>
-         <value>128</value>
+         <value>0</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR1" registerAlias="TCON" settingAlias="RD16"/>
@@ -4056,7 +4056,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR1" registerAlias="TCON" settingAlias="TCKPS"/>
-         <value>1:4</value>
+         <value>1:1</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR1" registerAlias="TCON" settingAlias="TMRCS"/>
@@ -4116,7 +4116,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR1" registerAlias="TMRH" settingAlias="TMRH"/>
-         <value>193</value>
+         <value>0</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR1" registerAlias="TMRI" settingAlias="enable"/>
@@ -4136,7 +4136,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR1" registerAlias="TMRL" settingAlias="TMRL"/>
-         <value>128</value>
+         <value>0</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="WDT" name="wdtPeriod"/>
@@ -4145,24 +4145,24 @@
    </tokenMap>
    <generatedFileHashHistoryMap class="java.util.HashMap">
       <entry>
-         <file>mcc_generated_files/interrupt_manager.h</file>
-         <hash>f7f799f83b8677cade6a138c4d37334f817aa71526bfb6069ccf70b9ee00a339</hash>
+         <file>mcc_generated_files/cvref.h</file>
+         <hash>91e553d1d73f6f347da3787e29dea095ca4bd944cee24a95bc22fc6383fe2fcb</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/ccp5.c</file>
          <hash>639073baba9e5787069a7a46190921e9149dbe7a2bc32c0bbf55ef43e5e205fe</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files/cvref.h</file>
-         <hash>91e553d1d73f6f347da3787e29dea095ca4bd944cee24a95bc22fc6383fe2fcb</hash>
+         <file>mcc_generated_files/interrupt_manager.h</file>
+         <hash>f7f799f83b8677cade6a138c4d37334f817aa71526bfb6069ccf70b9ee00a339</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/pin_manager.h</file>
-         <hash>0587db7304af6c56a4350be9abba0bb3dcddb29bab47f4fb8093f8f0352dd7b6</hash>
+         <hash>edfb08fb2f615a63643a8c7c0463c4a1e2faebe00f092fc79e0268214973db55</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/tmr1.c</file>
-         <hash>76b862785fc2a9d7f3809d8e8b177c3e73705ae80bb584af1bb3d1ae38c6b489</hash>
+         <hash>e4ee5ca3097cb17240ee210f9b589e339a9164baa6477557911ff108cd832693</hash>
       </entry>
       <entry>
          <file>main.c</file>
@@ -4193,12 +4193,12 @@
          <hash>68ae5e078b42de63f5e0a4b49eeb9f9272531a5e32bb6e7301813dc8c7ca31b5</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files/cmp1.c</file>
-         <hash>80bcb9cb774a27cbcb85e25be7b9771eee624156dc8514f7674b557a1addc0b5</hash>
-      </entry>
-      <entry>
          <file>mcc_generated_files/cvref.c</file>
          <hash>6c7210a83c1876396c01ff191c756d9fc5f727b2139917b5a979816c1e2c613e</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/cmp1.c</file>
+         <hash>f98bbe1b3f542ef07e42482d0138ed633d71b53f71ea58f87cf248dafe0d332e</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/mcc.h</file>
@@ -4214,19 +4214,19 @@
       </entry>
       <entry>
          <file>mcc_generated_files/interrupt_manager.c</file>
-         <hash>bf59bcbecb25ad5fa3529285c04a93c9fd84d36418abe92ed517d0a04fc8dced</hash>
+         <hash>1ac5a241e70bc57ffb2ca2a2737379834a9a934b65a75067d11453782e40b3c6</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/cmp1.h</file>
-         <hash>c7b1ea68b21061ad4ad67bf030723264bc506f132d05981900d638b97e73e45e</hash>
+         <hash>fa6af35bb4542321cbf3050f4517f55e46dbe791f0a76b4edec5d9cf7c8a8e55</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/mcc.c</file>
-         <hash>7b1cbccaebaedee8cd7b1a86322fda50e52495d80309c7c6f79c686070d4e5dc</hash>
+         <hash>ed6286288794d45680612836375ef974c3aadadcb6f1ef5289b8f817d542432d</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/pin_manager.c</file>
-         <hash>4a8cfcdb34c4c9ac65789901a17a360e39c1b06f2552fb196c74229b44e5c1f1</hash>
+         <hash>0ba91f609d4ad57a7954772efd0629db6720d7b4d5fc59008687eb45cdf6b3c1</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

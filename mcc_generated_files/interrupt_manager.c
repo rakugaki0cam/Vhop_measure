@@ -60,11 +60,7 @@ void __interrupt() INTERRUPT_InterruptManager (void)
     // interrupt handler
     if(INTCONbits.PEIE == 1)
     {
-        if(PIE4bits.CMP1IE == 1 && PIR4bits.CMP1IF == 1)
-        {
-            CMP1_ISR();
-        } 
-        else if(PIE4bits.CCP5IE == 1 && PIR4bits.CCP5IF == 1)
+        if(PIE4bits.CCP5IE == 1 && PIR4bits.CCP5IF == 1)
         {
             CCP5_CaptureISR();
         } 
