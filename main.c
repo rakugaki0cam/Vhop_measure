@@ -15,7 +15,8 @@
  *      DEBUGger --pin17 RC6/TX1 9600bps
  * 
  * 
- * 2023.06.02   ver.0.01    first version
+ * 2023.06.02   ver.0.02    first version
+ * 
  * 
  * 
 */
@@ -88,6 +89,7 @@ void main(void)
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
     
+    __delay_ms(1000);
     printf("\n");
     printf("********************\n");
     printf("HOPout Velocity Meas\n");
