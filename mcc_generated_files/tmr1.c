@@ -55,8 +55,6 @@
   Section: Global Variables Definitions
 */
 volatile uint16_t timer1ReloadVal;
-void (*TMR1_GateInterruptHandler)(void);
-static void TMR1_DefaultGateInterruptHandler(void);
 
 /**
   Section: TMR1 APIs
@@ -80,15 +78,6 @@ void TMR1_Initialize(void)
 	
     // Load the TMR value to reload variable
     timer1ReloadVal=(uint16_t)((TMR1H << 8) | TMR1L);
-
-    // Clearing IF flag before enabling the interrupt.
-    PIR1bits.TMR1GIF = 0;
-
-    // Enabling TMR1 interrupt.
-    PIE1bits.TMR1GIE = 1;
-
-    // Set Default Gated Interrupt Handler
-    TMR1_SetGateInterruptHandler(TMR1_DefaultGateInterruptHandler);
 
     // T1CKPS 1:1; RD16 disabled; SOSCEN disabled; nT1SYNC synchronize; TMR1CS FOSC/4; TMR1ON enabled; 
     T1CON = 0x01;
@@ -162,25 +151,6 @@ bool TMR1_HasOverflowOccured(void)
 {
     // check if  overflow has occurred by checking the TMRIF bit
     return(PIR1bits.TMR1IF);
-}
-void TMR1_GATE_ISR(void)
-{
-    // clear the TMR1 interrupt flag
-    PIR1bits.TMR1GIF = 0;
-
-    if(TMR1_GateInterruptHandler)
-    {
-        TMR1_GateInterruptHandler();
-    }
-}
-
-void TMR1_SetGateInterruptHandler(void (* InterruptHandler)(void)){
-    TMR1_GateInterruptHandler = InterruptHandler;
-}
-
-static void TMR1_DefaultGateInterruptHandler(void){
-    // add your TMR1 Gate interrupt custom code
-    // or set custom function using TMR1_SetGateInterruptHandler()
 }
 /**
   End of File

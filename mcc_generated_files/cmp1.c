@@ -58,8 +58,8 @@
 void CMP1_Initialize(void)
 {
 
-	// CON enabled; CPOL not inverted; EVPOL Any Change; COE COUT_pin; CREF CVREF; CCH C1INB;                          
-    CM1CON = 0xDC;
+	// CON enabled; CPOL not inverted; EVPOL Any Change; COE COUT_internal; CREF CVREF; CCH C1INB;                          
+    CM1CON = 0x9C;
 	
 }
 

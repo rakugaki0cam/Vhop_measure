@@ -385,47 +385,6 @@ uint8_t TMR1_CheckGateValueStatus(void);
     </code>
 */
 bool TMR1_HasOverflowOccured(void);
-/**
-  @Summary
-    Timer Gate Interrupt Service Routine
-
-  @Description
-    Timer Gate Interrupt Service Routine is called by the Interrupt Manager.
-    User can write the code in this function.
-
-  @Preconditions
-    Initialize  the TMR1 module with gate interrupt before calling this isr.
-
-  @Param
-    None
-
-  @Returns
-    None
-
-  @Example
-    None
-*/
-void TMR1_GATE_ISR(void);
-/**
-  @Summary
-    Setter for Timer Gate Interrupt Service Routine
-
-  @Description
-    This API can be used to set a custom interrupt handler for Gate Interrupt
-
-  @Preconditions
-    Initialize  the TMR1 module with gate interrupt before calling this API
-
-  @Param
-    None
-
-  @Returns
-    None
-
-  @Example
-    None
-*/
-void TMR1_SetGateInterruptHandler(void (* InterruptHandler)(void));
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 

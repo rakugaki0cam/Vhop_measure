@@ -34,16 +34,13 @@
 #include <xc.h> // include processor files - each processor file is guarded.  
 
 //global
-extern bool sensor1flag;
-extern bool sensor2flag;
-extern bool sensor3flag;
-extern uint16_t ontime2;
-extern uint16_t ontime3;
 
-void meas_tmr1_init(void);
-void sensor1on(void);
-void sensor2on(uint16_t);
-void sensor3on(uint16_t);
+
+uint8_t v_measure(void);
+void    meas_tmr1_init(void);
+void    sensor1on(void);
+void    sensor2on(uint16_t);
+void    sensor3on(uint16_t);
 
 
 #endif	/* XC_HEADER_TEMPLATE_H */
