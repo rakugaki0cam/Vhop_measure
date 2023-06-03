@@ -54,9 +54,10 @@ void SYSTEM_Initialize(void)
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
     CMP1_Initialize();
-    CCP4_Initialize();
     CCP5_Initialize();
+    CCP4_Initialize();
     TMR1_Initialize();
+    TMR0_Initialize();
     EUSART1_Initialize();
     CVREF_Initialize();
 }

@@ -53,10 +53,11 @@
 #include <stdbool.h>
 #include <conio.h>
 #include "interrupt_manager.h"
-#include "ccp4.h"
-#include "ccp5.h"
 #include "tmr1.h"
 #include "cmp1.h"
+#include "tmr0.h"
+#include "ccp4.h"
+#include "ccp5.h"
 #include "eusart1.h"
 #include "cvref.h"
 

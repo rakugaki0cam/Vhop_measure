@@ -33,6 +33,13 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
+
+typedef enum c {
+    BLUE,
+    RED,
+    COLOR_NUM,
+} led_color_t;
+
 //global
 
 
@@ -41,7 +48,8 @@ void    meas_tmr1_init(void);
 void    sensor1on(void);
 void    sensor2on(uint16_t);
 void    sensor3on(uint16_t);
-
+void    led_on(led_color_t);
+void    led_off_1sec(void);
 
 #endif	/* XC_HEADER_TEMPLATE_H */
 
