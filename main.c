@@ -16,7 +16,7 @@
  * 
  * 
  * 2023.06.02   ver.0.02    first version
- * 
+ * 2023.06.03   ver.1.00    OK,Fail LED追加
  * 
  * 
 */
@@ -29,53 +29,61 @@
 #define PRESCALER   1   // prescaler
 #define TIMER1GAIN  (float)1/_XTAL_FREQ*4*PRESCALER*1000  // msec/bit  FOSC/4
 //センサ位置
-#define D01  9.0 - 3.0  // mm 玉待機位置～センサ1 玉半径3mm先がオンする位置
+#define D01  9.0-3.0    // mm 玉待機位置～センサ1 玉半径3mm先がオンする位置
 #define D12  7.0        // mm センサ1～2距離
 #define D23  7.0        // mm センサ2～3距離
 
 //timer
-const uint16_t ontime1 = 0x0000;
-uint16_t ontime2;
-uint16_t ontime3;
+const uint16_t  ontime1 = 0x0000;
+uint16_t    ontime2;
+uint16_t    ontime3;
 //
-const float   t1 = (float)ontime1 * TIMER1GAIN; // msec
+const float t1 = (float)ontime1 * TIMER1GAIN; // msec
 float   t2;     // msec センサ1～2時間
 float   t3;     // msec センサ1～3時間
 float   dt2;    // msec センサ1～2時間
 float   dt3;    // msec センサ2～3時間
 float   v12;    // m/sec センサ1～2平均速度
 float   v23;    // m/sec センサ2～3平均速度
-uint16_t cnt;   // time over count
+
+uint16_t timeout_cnt;   // time over count
+
 
 typedef enum n {
     IDLE,
     SENSOR1ON,
     SENSOR2ON,
     SENSOR3ON,
-    TIMEOUT,
+    MEASURE_DONE,
     ERROR,
+    CLEAR,
     MEASURE_STATUS_NUM,        
 } measure_status_t;
-
 measure_status_t status;
+
 
 typedef enum e {
     OK,
-    ERR,
+    TIMEOUT,        
+    TIME_ERR,
+    UNEXCEP_ERR,
     MEASURE_ERROR_NUM,        
 } measure_error_t;
+measure_error_t re;
 
-measure_error_t ans;
 
 /*
                          Main application
  */
 void main(void)
 {
+    uint8_t i;
+
     // Initialize the device
     SYSTEM_Initialize();
     CCP4_SetCallBack(sensor2on);
     CCP5_SetCallBack(sensor3on);
+    TMR0_SetInterruptHandler(led_off_1sec);
     
     // Enable the Global Interrupts
     INTERRUPT_GlobalInterruptEnable();
@@ -98,13 +106,24 @@ void main(void)
     printf(" d23: %3.1fmm\n", (float)D23);
     printf("********************\n");
     printf("\n");
+    LED_BLUE_SetLow();
+    LED_RED_SetLow();
+    __delay_ms(200);
+    for(i = 0; i < 2; i++){
+        LED_BLUE_SetHigh();
+        LED_RED_SetHigh();
+        __delay_ms(100);
+        LED_BLUE_SetLow();
+        LED_RED_SetLow();
+        __delay_ms(100);
+    }
 
     meas_tmr1_init();
     
     while (1)
     {
         // main loop
-        ans = v_measure();
+        re = v_measure();
     }
 }
 
@@ -113,19 +132,19 @@ void main(void)
     
 uint8_t v_measure(void){
     //measure main
-    uint8_t ans = OK;
+    static measure_error_t ans = OK;
     
     switch (status){
         case IDLE:
             //idle
         case SENSOR1ON: 
-            //timer start
+            //TMR1 start
         case SENSOR2ON:
-            cnt = TMR1_ReadTimer();
-            if (cnt > 0xff00){
-                status = TIMEOUT;
-                ans = ERR;
-                return ans;
+            timeout_cnt = TMR1_ReadTimer();
+            if (timeout_cnt > 0xfff0){
+                status = ERROR;
+                ans = TIMEOUT;
+                break;
             }
             break;
 
@@ -137,61 +156,61 @@ uint8_t v_measure(void){
             printf("timer3: %4x\n", ontime3);
 #endif
             if (((ontime2 - ontime1) < 0x100) || ((ontime3 - ontime2) < 0x100)){
-                //error
+                //time error
                 status = ERROR;
-                ans = ERR;
-                return ans;
+                ans = TIME_ERR;
                 break;
             }
-
+            status = MEASURE_DONE;
+            break;
+            
+        case MEASURE_DONE:
+            led_on(BLUE);
             t2 = (float)ontime2 * TIMER1GAIN; // msec
             t3 = (float)ontime3 * TIMER1GAIN; // msec
             dt2 = t2 - t1;
             dt3 = t3 - t2;          // msec
             v12 = (float)D12 / dt2;    // m/sec
             v23 = (float)D23 / dt3;   // m/sec
+            printf("\n");
             printf("t2:  %6.4f msec\n", t2);
             printf("v12: %6.2f m/s\n", v12);
             printf("t3:  %6.4f msec\n", t3);
             printf("v23: %6.2f m/s\n", v23);
-            printf("\n");
-            __delay_ms(100);
-            meas_tmr1_init();
-            return ans;
+
+            status = CLEAR;
             break;
 
-        case TIMEOUT:
-            TMR1_StopTimer();                
-            printf("time over\n");
-            __delay_ms(100);
-            meas_tmr1_init();
-            ans = ERR;
-            return ans;
-            break;
-
-         case ERROR:
-            TMR1_StopTimer();                
-            printf("measurement error\n");
-            __delay_ms(100);
-            meas_tmr1_init();
-            ans = ERR;
-            return ans;
-            break;
-
+        case ERROR:
         default:
-            TMR1_StopTimer();                
-            printf("unexcepted error\n");
-            __delay_ms(100);
+            led_on(RED);
+            TMR1_StopTimer();
+            if (TIME_ERR == ans){
+                printf("measurement error\n");
+            }else if (TIMEOUT == ans){
+                printf("timeout\n");
+            }else{
+                printf("unexcepted error\n");
+                ans = UNEXCEP_ERR;
+            }
+            
+            status = CLEAR;
+            break;
+            
+        case CLEAR:
+            __delay_ms(500);
             meas_tmr1_init();
-            ans = ERR;
-            return ans;
+            ans = OK;
+            break;
+
     }
+    
     return ans;
 }
 
 
 void meas_tmr1_init(void){
-    cnt = 0;
+    timeout_cnt = 0;
     status = IDLE;
     TMR1_WriteTimer(ontime1);
     TMR1_StartTimer();
@@ -199,18 +218,37 @@ void meas_tmr1_init(void){
 }
 
 
-void sensor2on(uint16_t a){   //ontime2 - global
+void sensor2on(uint16_t timer_value){   //ontime2 - global
     if (IDLE == status){
         status = SENSOR2ON;
-        ontime2 = a;
+        ontime2 = timer_value;
     }
 }
 
-void sensor3on(uint16_t a){   //ontime3 - global
+
+void sensor3on(uint16_t timer_value){   //ontime3 - global
     if (SENSOR2ON == status){
         status = SENSOR3ON;
-        ontime3 = a;
+        ontime3 = timer_value;
     }
+}
+
+void led_on(led_color_t color){
+    if (BLUE == color){
+        LED_BLUE_SetHigh();
+    }else if (RED == color){
+        LED_RED_SetHigh();
+    }else{
+        return;
+    }
+    TMR0_Reload();
+    TMR0_StartTimer();
+}
+
+void led_off_1sec(void){
+    LED_BLUE_SetLow();
+    LED_RED_SetLow();
+    TMR0_StopTimer();
 }
 
 /**
